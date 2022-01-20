@@ -37,7 +37,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'userManagement',
+    'products'
 ]
+
+BOOTSTRAP4 = {
+    'include_jquery': True,
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -70,6 +77,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'antiCounterfeit.wsgi.application'
 
+AUTH_USER_MODEL = 'userManagement.User'
+
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
@@ -101,16 +110,24 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+DATE_INPUT_FORMATS = [
+    '%d-%m-%Y',
+    # '%Y-%m-%d'
+]
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Dhaka'
 
 USE_I18N = True
 
+USE_L10N = True
+
 USE_TZ = True
+
 
 
 # Static files (CSS, JavaScript, Images)
