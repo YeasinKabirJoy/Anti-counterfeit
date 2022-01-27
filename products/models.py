@@ -3,11 +3,13 @@ from userManagement.models import Manufacturer,Distributor,DeliveryPerson
 
 # Create your models here.
 
-
+#product_price
 class Carton(models.Model):
-    carton_id=models.CharField(primary_key=True,max_length=20,editable=False)
+    carton_id = models.CharField(primary_key=True,max_length=20)
     manufacturer_id = models.ForeignKey(Manufacturer,on_delete=models.DO_NOTHING)
-    product_quantity= models.IntegerField()
+    product_name = models.CharField(max_length=50,blank=True,null=True)
+    # product_quantity = models.IntegerField()
+    product_price = models.IntegerField()
     production_date= models.DateField()
     expiry_date = models.DateField()
     distributor = models.ForeignKey(Distributor,blank=True,null=True,on_delete=models.DO_NOTHING,related_name='distributor')
@@ -20,7 +22,7 @@ class Carton(models.Model):
 
 
 class Product(models.Model):
-    product_id = models.CharField(primary_key=True,max_length=20,editable=False)
+    product_id = models.CharField(primary_key=True,max_length=20)
     carton_id = models.ForeignKey(Carton,on_delete=models.CASCADE)
     number_of_scan = models.IntegerField(blank=True,null=True,default=0)
     is_blocked = models.BooleanField(default=False)

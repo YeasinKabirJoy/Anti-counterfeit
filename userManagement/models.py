@@ -12,6 +12,7 @@ from django.contrib.auth.models import AbstractBaseUser,BaseUserManager,Permissi
 from django.db.models.signals import post_save
 from django.utils import timezone
 
+
 # Create your models here.
 
 class Types(models.TextChoices):
@@ -58,7 +59,6 @@ class User(AbstractBaseUser,PermissionsMixin):
 
     USERNAME_FIELD = 'username'
 
-
     def __str__(self):
         return self.username
 
@@ -75,8 +75,7 @@ class Manufacturer(User):
         proxy = True
 
     def save(self, *args, **kwargs):
-        if not self.pk:
-            self.type = Types.Manufacturer
+        self.type = Types.Manufacturer
         return super().save(*args, **kwargs)
 
 
@@ -92,8 +91,7 @@ class Distributor(User):
         proxy = True
 
     def save(self, *args, **kwargs):
-        if not self.pk:
-            self.type = Types.Distributor
+        self.type = Types.Distributor
         return super().save(*args, **kwargs)
 
 
@@ -109,8 +107,7 @@ class DeliveryPerson(User):
         proxy = True
 
     def save(self, *args, **kwargs):
-        if not self.pk:
-            self.type = Types.DeliveryPerson
+        self.type = Types.DeliveryPerson
         return super().save(*args, **kwargs)
 
 
@@ -126,11 +123,10 @@ class Admin(User):
         proxy = True
 
     def save(self, *args, **kwargs):
-        if not self.pk:
-            self.type = Types.Admin
-            self.is_active = True
-            self.is_superuser = True
-            self.is_staff = True
+        self.type = Types.Admin
+        self.is_active = True
+        self.is_superuser = True
+        self.is_staff = True
         return super().save(*args, **kwargs)
 
 
