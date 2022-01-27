@@ -8,7 +8,7 @@ class Carton(models.Model):
     carton_id = models.CharField(primary_key=True,max_length=20)
     manufacturer_id = models.ForeignKey(Manufacturer,on_delete=models.DO_NOTHING)
     product_name = models.CharField(max_length=50,blank=True,null=True)
-    # product_quantity = models.IntegerField()
+    product_quantity = models.IntegerField()
     product_price = models.IntegerField()
     production_date= models.DateField()
     expiry_date = models.DateField()
