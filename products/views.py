@@ -46,7 +46,7 @@ def add_carton(request):
                     box_size=10,
                     border=4,
                 )
-                data = '192.168.0.101:8000/carton/'+str(encrypted_carton_id.hex())
+                data = '192.168.131.1:8000/carton/'+str(encrypted_carton_id.hex())
                 # qr.add_data(encrypted_carton_id.hex())
                 qr.add_data(data)
                 qr.make(fit=True)
@@ -74,7 +74,7 @@ def add_carton(request):
                         box_size=10,
                         border=4,
                     )
-                    data = '192.168.0.101:8000/product/' + str(encrypted_product_id.hex())
+                    data = '192.168.131.1:8000/product/' + str(encrypted_product_id.hex())
                     # qr.add_data(encrypted_product_id.hex())
                     qr.add_data(data)
                     qr.make(fit=True)
