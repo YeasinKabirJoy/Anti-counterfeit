@@ -46,7 +46,7 @@ def add_carton(request):
                     box_size=10,
                     border=4,
                 )
-                data = '192.168.131.1:8000/carton/'+str(encrypted_carton_id.hex())
+                data = '192.168.0.126:8000/carton/'+str(encrypted_carton_id.hex())
                 # qr.add_data(encrypted_carton_id.hex())
                 qr.add_data(data)
                 qr.make(fit=True)
@@ -65,7 +65,6 @@ def add_carton(request):
 
                     encrypted_product_id = encrypt_box.encrypt(pad(pid.encode('utf-8'),10,style='pkcs7'))
                     product= Product(product_id=pid,carton_id=carton)
-                    carton.save()
                     product.save()
 
                     qr = qrcode.QRCode(
@@ -74,15 +73,14 @@ def add_carton(request):
                         box_size=10,
                         border=4,
                     )
-                    data = '192.168.131.1:8000/product/' + str(encrypted_product_id.hex())
+                    data = '192.168.0.126:8000/product/' + str(encrypted_product_id.hex())
                     # qr.add_data(encrypted_product_id.hex())
                     qr.add_data(data)
                     qr.make(fit=True)
                     img = qr.make_image(fill_color="blue", back_color="black")
                     img.save('QRcodes\{}\{}.png'.format(cid,pid))
 
-                    # img = qrcode.make(encrypted_product_id)
-                    # img.save("{}.png".format(pid))
+                carton.save()
                 form=AddCartonAndProductForm()
         context = {
             'form': form,
@@ -102,6 +100,7 @@ def add_carton_details(request, cid):
     carton = ''
     message = ''
     if request.user.type == Types.Distributor:
+        start_time = time.time()
         try:
             with open('decrypt_private_key.txt', 'r') as f:
                 content = f.read()
@@ -135,16 +134,17 @@ def add_carton_details(request, cid):
             carton.save()
             message= str(request.user.name) + " : " + "Your Information Has  Successfully Stored"
         else:
-            message = 'Already Scanned'
+            message = message = str(request.user.name)+': QR code Already Scanned'
 
         context={
             'carton':carton,
             'message':message
         }
+        print("distributor--- %s seconds ---" % (time.time() - start_time))
         return render(request, 'addCartonSupplyChainInformation.html', context)
 
     elif request.user.type == Types.DeliveryPerson:
-
+        start_time = time.time()
         try:
             with open('decrypt_private_key.txt', 'r') as f:
                 content = f.read()
@@ -178,8 +178,10 @@ def add_carton_details(request, cid):
         else:
             form = ''
             message = str(request.user.name) + " :  " + "Already Scanned"
-
+        print("delivery1--- %s seconds ---" % (time.time() - start_time))
         if request.method == 'POST':
+            start_time = time.time()
+
             form = PharmacistDetailsForm(request.POST)
             if form.is_valid():
                 data = form.cleaned_data
@@ -193,11 +195,12 @@ def add_carton_details(request, cid):
                     carton.is_blocked = True
                     form = ''
                     carton.save()
-                    message = str(request.user.name) + " : " + "The Informations  have successfully stored"
+                    message = str(request.user.name) + " : " + "The Information's  have successfully stored"
                 else:
                     message = str(request.user.name) + " :  " + "you are not allowed to add information"
                     form = ''
                     carton = ''
+            print("delivery2--- %s seconds ---" % (time.time() - start_time))
 
         context={
             'name':request.user.name,
@@ -205,6 +208,7 @@ def add_carton_details(request, cid):
             'carton':carton,
             'message':message
              }
+
         return render(request, 'addCartonSupplyChainInformation.html', context)
     else:
         context = {
@@ -214,6 +218,7 @@ def add_carton_details(request, cid):
 
 
 def product_details(request,pid):
+    start_time = time.time()
     try:
         with open('decrypt_private_key.txt', 'r') as f:
             content = f.read()
@@ -256,6 +261,7 @@ def product_details(request,pid):
         'message':message
 
     }
+    print("consumer--- %s seconds ---" % (time.time() - start_time))
     return render(request, 'productDetails.html', context)
 
 
