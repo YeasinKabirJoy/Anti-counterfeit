@@ -67,7 +67,7 @@
 # decrypt_message = unpad(decrypt_box.decrypt(bytes.fromhex(encrypt_message)),10,style='pkcs7').decode()
 # print(decrypt_message)
 #
-# message= 'c001p001'
+# message= 'AA001001'
 # encrypt_message = encrypt_box.encrypt(pad(message.encode(),10,style='pkcs7')).hex()
 # print(encrypt_message)
 # decrypt_message = unpad(decrypt_box.decrypt(bytes.fromhex(encrypt_message)),10,style='pkcs7').decode()

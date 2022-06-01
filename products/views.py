@@ -54,7 +54,7 @@ def add_carton(request):
                 if not os.path.exists('QRcodes\{}'.format(cid)):
                     os.makedirs('QRcodes\{}'.format(cid))
                 img.save('QRcodes\{}\{}.png'.format(cid,cid))
-
+                carton.save()
                 for i in range(1,int(quantity)+1):
                     if i < 10:
                         pid = cid+'00'+str(i)
@@ -65,6 +65,7 @@ def add_carton(request):
 
                     encrypted_product_id = encrypt_box.encrypt(pad(pid.encode('utf-8'),10,style='pkcs7'))
                     product= Product(product_id=pid,carton_id=carton)
+
                     product.save()
 
                     qr = qrcode.QRCode(
@@ -80,9 +81,10 @@ def add_carton(request):
                     img = qr.make_image(fill_color="blue", back_color="black")
                     img.save('QRcodes\{}\{}.png'.format(cid,pid))
 
-                carton.save()
+
                 form=AddCartonAndProductForm()
         context = {
+            'message': '',
             'form': form,
         }
         print("--- %s seconds ---" % (time.time() - start_time))
